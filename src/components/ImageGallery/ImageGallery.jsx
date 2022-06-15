@@ -23,7 +23,7 @@ function ImageGallery({ images, modalOpen }) {
 
 ImageGallery.propTypes = {
   images: PropTypes.array.isRequired,
-  modalOpen: PropTypes.func.isRequired
+  modalOpen: PropTypes.func.isRequired,
 };
 
 export default ImageGallery;

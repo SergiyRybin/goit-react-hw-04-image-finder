@@ -6,6 +6,9 @@ import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 import Loader from '../Loader/Loader';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Searchbar = () => {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
@@ -29,6 +32,11 @@ const Searchbar = () => {
 
     fetchDataImage(query, page)
       .then(images => {
+        if (images.totalHits === 0) {
+          setLoader(false);
+          setPage(1);
+          return toast('Немає такого зображення');
+        }
         setImages(state => [...state, ...images.hits]);
         setPage(state => state + 1);
         setLoader(false);
@@ -43,10 +51,10 @@ const Searchbar = () => {
 
   const fromData = data => {
     if (data.length === 0) {
+      toast('Введіть назву картинки');
       return;
     }
     setImages([]);
-    setPage(1);
     setQuery(data);
     setLoader(true);
   };
@@ -64,6 +72,7 @@ const Searchbar = () => {
   return (
     <>
       <SearchForm onSubmit={fromData} />
+
       <ImageGallery images={images} modalOpen={openModal} />
       {loader && <Loader />}
       {showModal && (
